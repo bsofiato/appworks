@@ -64,7 +64,7 @@
         <version>2.18</version>
         <configuration>
           <additionalClasspathElements>
-            <additionalClasspathElement>src/test/java</additionalClasspathElement>
+            <additionalClasspathElement>${basedir}/src/test/java</additionalClasspathElement>
           </additionalClasspathElements>
         </configuration>
       </plugin>      
