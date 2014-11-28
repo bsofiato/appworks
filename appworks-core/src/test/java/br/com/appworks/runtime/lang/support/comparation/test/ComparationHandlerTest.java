@@ -13,6 +13,10 @@ import java.util.TreeSet;
 import junit.framework.*;
 import org.easymock.MockControl;
 import br.com.appworks.runtime.lang.OrderPolicy;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 /**
  *
@@ -32,9 +36,9 @@ public class ComparationHandlerTest extends TestCase {
   }
   
   public void testNullObjectHashCode() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
-    comparationStrategyControl1.replay();
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> (); 
     
@@ -42,7 +46,7 @@ public class ComparationHandlerTest extends TestCase {
     
     assertEquals(0, new ComparationHandler <String> (String.class, map).hashCode(null));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
   
   public void testNonNullObjectHashCode() {
@@ -76,59 +80,59 @@ public class ComparationHandlerTest extends TestCase {
   }
 
   public void testNullOperandsEquals() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategyControl1.replay();
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
     
     assertTrue(new ComparationHandler <String> (String.class, map).equals(null, null));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
 
   public void testNullFirstOperandEquals() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategyControl1.replay();
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
     
     assertFalse(new ComparationHandler <String> (String.class, map).equals(null, "TESTE"));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
 
   public void testNullSecondOperandEquals() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategyControl1.replay();
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
     
     assertFalse(new ComparationHandler <String> (String.class, map).equals("TESTE", null));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
 
   public void testSameOperandsEquals() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategyControl1.replay();
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
     
     assertTrue(new ComparationHandler <String> (String.class, map).equals("TESTE", "TESTE"));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
   public void testFirstStrategyFalseEquals() {
     String op1 = "OP1";
@@ -232,37 +236,37 @@ public class ComparationHandlerTest extends TestCase {
   }
   
   public void testNullOperandsCompare() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
-    
-    comparationStrategyControl1.replay();
-    
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
+    replay(comparationStrategy1);
+
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
     
     assertEquals(0, new ComparationHandler <String> (String.class, map).compare(null, null));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
+  
   public void testSameOperandsCompare() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategyControl1.replay();
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
     
     assertEquals(0, new ComparationHandler <String> (String.class, map).compare("TEST", "TEST"));
   
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
 
   public void testNullFirstOperandCompare() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
-    
-    comparationStrategyControl1.replay();
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
+
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
@@ -272,13 +276,14 @@ public class ComparationHandlerTest extends TestCase {
     } catch (NullPointerException ex) {
     } catch (Exception ex) {
     }
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
+  
   public void testNullSecondOperandCompare() {
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategyControl1.replay();
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <String>> map = new TreeSet <ComparationStrategy <String>> ();
     map.add(comparationStrategy1);
@@ -288,17 +293,16 @@ public class ComparationHandlerTest extends TestCase {
     } catch (NullPointerException ex) {
     } catch (Exception ex) {
     }
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
 
   public void testNotSameTypeOperandsCompare() {
     Object obj1 = new Object();
-    MockControl comparationStrategyControl1 = MockControl.createControl(MockComparationStrategy.class);
-    MockComparationStrategy comparationStrategy1 = (MockComparationStrategy)(comparationStrategyControl1.getMock());
+    MockComparationStrategy comparationStrategy1 = createMock(MockComparationStrategy.class);
+    expect(comparationStrategy1.compareTo(comparationStrategy1)).andStubReturn(0);
     
-    comparationStrategy1.compare("TEST", obj1);
-    comparationStrategyControl1.setThrowable(new ClassCastException());
-    comparationStrategyControl1.replay();
+    expect(comparationStrategy1.compare("TEST", obj1)).andThrow(new ClassCastException());
+    replay(comparationStrategy1);
     
     SortedSet <ComparationStrategy <Object>> map = new TreeSet <ComparationStrategy <Object>> ();
     map.add(comparationStrategy1);
@@ -308,7 +312,7 @@ public class ComparationHandlerTest extends TestCase {
     } catch (ClassCastException ex) {
     } catch (Exception ex) {
     }
-    comparationStrategyControl1.verify();
+    verify(comparationStrategy1);
   }
 
   public void testFirstStrategyNotEqualsCompare() {

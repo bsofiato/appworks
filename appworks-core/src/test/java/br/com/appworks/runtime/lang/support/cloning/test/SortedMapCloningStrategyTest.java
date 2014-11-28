@@ -15,10 +15,16 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import junit.framework.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import org.easymock.MockControl;
 
 
 public class SortedMapCloningStrategyTest extends TestCase {
+  public static interface MockHelperInterface extends Cloneable, Comparable {
+  }  
   private static class PrivateSortedMap extends TreeMap <Object, Object> {
   }
   public static class NoDefaultConstructorSortedMap extends TreeMap <Object, Object> {
@@ -266,20 +272,19 @@ public class SortedMapCloningStrategyTest extends TestCase {
   }
   
   public void testCloneNotSupportedKeySortedMapCloning() {
-    MockControl control = MockControl.createControl(Cloneable.class);
+    MockHelperInterface cloneable = createMock(MockHelperInterface.class);
     CloneNotSupportedException cnsex = new CloneNotSupportedException();
     try {
-      Cloneable cloneable = (Cloneable)(control.getMock());
-      cloneable.clone();
-      control.setThrowable(cnsex);
-      control.replay();
+      expect(cloneable.compareTo(cloneable)).andReturn(0);
+      expect(cloneable.clone()).andThrow(cnsex);
+      replay(cloneable);
       SortedMap <Object, Object> source = new TreeMap <Object, Object> ();
       source.put(cloneable, "TESTE");
       new SortedMapCloningStrategy <Object, Object> ().clone(source);
       fail();
     } catch (CloneNotSupportedException ex) {
     } finally {
-      control.verify();
+      verify(cloneable);
     }
   }
   
