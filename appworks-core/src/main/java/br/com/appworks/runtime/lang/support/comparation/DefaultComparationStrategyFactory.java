@@ -204,6 +204,10 @@ public class DefaultComparationStrategyFactory implements ComparationStrategyFac
           delegatedComparationStrategies.add(new PropertyComparationStrategy(evaluationOrder, propertyAccessStrategy, comparationStrategy));
         }
       }
+      Comparable comparable = ClassUtils.getInheritedAnnotation(klass, Comparable.class);
+      if (comparable.concreteClassesMustMatch()) {
+        delegatedComparationStrategies.add(new ConcreteClassComparationStrategy<Type>());
+      }
       return new ComparationHandler<Type>(klass, delegatedComparationStrategies);
     } catch (IllegalAccessException ex) {
       throw new RuntimeException(ex);

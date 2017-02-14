@@ -96,4 +96,10 @@ public @interface Comparable {
    * alone</tt>.</p> 
    */
   Class <? extends ComparationStrategy> strategy() default ComparationStrategy.class;
+  
+  /**
+   * <p>Flag indicating whether two operands should be instance of the same 
+   * concrete class to be considered equivalent.</p>
+   */
+  boolean concreteClassesMustMatch() default false;
 }
