@@ -22,6 +22,7 @@ package br.com.appworks.runtime.lang.support.comparation.aop;
 
 import br.com.appworks.runtime.lang.support.comparation.ComparationStrategy;
 import br.com.appworks.runtime.lang.support.comparation.ComparationStrategyFactory;
+import br.com.appworks.runtime.lang.support.comparation.DefaultComparationStrategyFactory;
 
 /**
  * <p>Comparation aspect.</p>
@@ -63,9 +64,12 @@ public final aspect ComparationAspect {
    * @return Comparation strategy factory associated with the comparation aspect
    */
    private static ComparationStrategyFactory getStaticComparationStrategyFactory() {
-     return comparationStrategyFactory;
+    if (comparationStrategyFactory == null) {
+      comparationStrategyFactory = DefaultComparationStrategyFactory.createDefault();
+    }
+    return comparationStrategyFactory;
    }
-  
+
   /**
    * <p>Gets the comparation strategy factory associated with the comparation 
    * aspect.</p>

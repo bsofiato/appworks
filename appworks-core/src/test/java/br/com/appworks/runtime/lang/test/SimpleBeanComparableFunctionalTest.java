@@ -365,4 +365,14 @@ public class SimpleBeanComparableFunctionalTest extends TestCase {
       assertTrue(0 < ((java.lang.Comparable)(new DescendingOrderIdentityPropertyBean("X"))).compareTo(new DescendingOrderIdentityPropertyBean(newX)));
     }
   }
+
+  public void testDefaultComparisionFactory() throws Exception {
+    Class klass = Class.forName("br.com.appworks.runtime.lang.support.comparation.aop.ComparationAspect");
+    klass.getDeclaredMethod("setComparationStrategyFactory", ComparationStrategyFactory.class).invoke(Aspects.aspectOf(klass), new Object [] { null });
+    
+    ValuePropertyBean testBean = new ValuePropertyBean();
+    assertTrue(testBean.equals(testBean));
+  }
+  
+  
 }

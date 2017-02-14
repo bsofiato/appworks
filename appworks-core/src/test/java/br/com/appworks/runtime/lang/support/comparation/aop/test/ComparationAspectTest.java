@@ -169,42 +169,6 @@ public class ComparationAspectTest extends TestCase {
     }
   }
   
-  public void testNonConfiguredComparationAspectHashCode() {
-    try {
-      AdvisedPropertyTestBean bean = new AdvisedPropertyTestBean();
-      bean.hashCode();
-      fail();
-    } catch (IllegalStateException ex) {
-    } catch (Exception ex) {
-      fail();
-    }
-  }
-
-  public void testNonConfiguredComparationAspectEquals() {
-    try {
-      AdvisedPropertyTestBean bean = new AdvisedPropertyTestBean();
-      bean.equals(null);
-      fail();
-    } catch (IllegalStateException ex) {
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      fail();
-    }
-  }
-
-  public void testNonConfiguredComparationAspectCompareTo() {
-    try {
-      AdvisedPropertyTestBean bean = new AdvisedPropertyTestBean();
-      assertTrue(bean instanceof java.lang.Comparable);
-      ((java.lang.Comparable)(bean)).compareTo(null);
-      fail();
-    } catch (IllegalStateException ex) {
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      fail();
-    }
-  }
-
   public void testDerivedPropertyAdvisedHashCode() {
     MockControl comparationStrategyFactoryControl = null;
     MockControl comparationStrategyControl = null;

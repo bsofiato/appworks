@@ -22,9 +22,12 @@ package br.com.appworks.runtime.lang.support.comparation;
 
 import br.com.appworks.runtime.lang.Comparable;
 import br.com.appworks.runtime.lang.ComparationPolicy;
+import br.com.appworks.runtime.lang.support.property.DefaultPropertyAccessStrategyFactory;
 import br.com.appworks.runtime.lang.support.reflect.ClassUtils;
 import br.com.appworks.runtime.lang.support.property.PropertyAccessStrategyFactory;
 import br.com.appworks.runtime.lang.support.property.getting.PropertyGettingStrategy;
+import br.com.appworks.runtime.lang.support.property.getting.reflection.ReflectionBasedPropertyGettingStrategyFactory;
+import br.com.appworks.runtime.lang.support.property.setting.reflection.ReflectionBasedPropertySettingStrategyFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -344,5 +347,14 @@ public class DefaultComparationStrategyFactory implements ComparationStrategyFac
     } else {
       this.customTypeValueComparationStrategyMapping = Collections.EMPTY_MAP;
     }
+  }
+
+  /**
+   * <p>Creates a default, general purpose, comparision factory.
+   * 
+   * @return Default comparision strategy factory.
+   */
+  public static ComparationStrategyFactory createDefault() {
+    return new CachingComparationStrategyFactoryAdapter(new DefaultComparationStrategyFactory(new DefaultPropertyAccessStrategyFactory(new ReflectionBasedPropertyGettingStrategyFactory(), new ReflectionBasedPropertySettingStrategyFactory())));
   }
 }
