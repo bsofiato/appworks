@@ -103,7 +103,7 @@ public class DefaultStringficationStrategyFactory implements StringficationStrat
       if (getCustomTypeStringficationStrategyMapping().containsKey(type)) {
         return (StringficationStrategy) (getCustomTypeStringficationStrategyMapping().get(type).clone());
       } else if (type.isArray()) {
-        return new ArrayStringficationStrategy();
+        return new ArrayStringficationStrategy(type.getComponentType());
       } else {
         return new ToStringStringficationStrategy();
       }

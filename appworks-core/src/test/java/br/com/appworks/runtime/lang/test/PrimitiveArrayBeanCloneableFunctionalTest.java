@@ -9,43 +9,35 @@ import br.com.appworks.runtime.lang.support.cloning.CachingCloningStrategyFactor
 import br.com.appworks.runtime.lang.support.cloning.CloningStrategyFactory;
 import br.com.appworks.runtime.lang.support.property.getting.reflection.ReflectionBasedPropertyGettingStrategyFactory;
 import br.com.appworks.runtime.lang.support.property.setting.reflection.ReflectionBasedPropertySettingStrategyFactory;
-import java.util.Calendar;
+import java.util.Arrays;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotSame;
+import static junit.framework.TestCase.assertSame;
+import static junit.framework.TestCase.fail;
 
-public class ArrayBeanCloneableFunctionalTest extends TestCase {
+public class PrimitiveArrayBeanCloneableFunctionalTest extends TestCase {
   
   @Cloneable(CloningPolicy.SHALLOW)
   public static class ShallowArrayTestBean {
-    private Object [] x;
-    public ShallowArrayTestBean(Object [] x) {
+    private int [] x;
+    public ShallowArrayTestBean(int [] x) {
       this.x = x;
     }
     public Object clone() throws CloneNotSupportedException {
       return super.clone();
     }
   }
-  
-  @Cloneable(CloningPolicy.DEEP)
-  public static class StaticDeepArrayTestBean {
-    private static Object [] x;
-    public StaticDeepArrayTestBean(Object [] x) {
-      this.x = x;
-    }
-    public Object clone() throws CloneNotSupportedException {
-      return super.clone();
-    }
-  }
-  
   @Cloneable(CloningPolicy.DEEP)
   public static class DeepArrayTestBean {
-    private Object [] x;
-    public DeepArrayTestBean(Object [] x) {
+    private int [] x;
+    public DeepArrayTestBean(int [] x) {
       this.x = x;
     }
     public Object clone() throws CloneNotSupportedException {
       return super.clone();
     }
   }
-  public ArrayBeanCloneableFunctionalTest(String testName) {
+  public PrimitiveArrayBeanCloneableFunctionalTest(String testName) {
     super(testName);
   }
 
@@ -80,12 +72,10 @@ public class ArrayBeanCloneableFunctionalTest extends TestCase {
 
   public void testShallowArrayTestBeanNotNullArray() {
     try {
-      for (Object [] array : new Object [][] {
-          new Object[0],
-          new Object[] { null },
-          new Object[] { "X", "Y"},
-          new Object[] { Calendar.getInstance(), Calendar.getInstance() },
-          new Object[] { null, "X", Calendar.getInstance() } }) {
+      for (int [] array : new int [][] {
+          new int[0],
+          new int[] { 1 },
+          new int[] { 1, 2 }}) {
         ShallowArrayTestBean bean = new ShallowArrayTestBean(array);
         ShallowArrayTestBean clone = clone(bean);
         assertNotSame(bean, clone);
@@ -97,35 +87,6 @@ public class ArrayBeanCloneableFunctionalTest extends TestCase {
   }
 
   
-  public void testStaticDeepArrayTestBeanNullArray() {
-    try {
-      StaticDeepArrayTestBean bean = new StaticDeepArrayTestBean(null);
-      StaticDeepArrayTestBean clone = clone(bean);
-      assertNotSame(bean, clone);
-      assertEquals(bean.x, clone.x);
-    } catch (CloneNotSupportedException ex) {
-      fail();
-    }
-  }
-
-  public void testStaticDeepArrayTestBeanNotNullArray() {
-    try {
-      for (Object [] array : new Object [][] {
-          new Object[0],
-          new Object[] { null },
-          new Object[] { "X", "Y"},
-          new Object[] { Calendar.getInstance(), Calendar.getInstance() },
-          new Object[] { null, "X", Calendar.getInstance() } }) {
-        StaticDeepArrayTestBean bean = new StaticDeepArrayTestBean(array);
-        StaticDeepArrayTestBean clone = clone(bean);
-        assertNotSame(bean, clone);
-        assertSame(bean.x, clone.x);
-      }
-    } catch (CloneNotSupportedException ex) {
-      fail();
-    }
-  }
-
   public void testDeepArrayTestBeanNullArray() {
     try {
       DeepArrayTestBean bean = new DeepArrayTestBean(null);
@@ -139,29 +100,18 @@ public class ArrayBeanCloneableFunctionalTest extends TestCase {
   
   public void testDeepArrayTestBeanNotNullArray() {
     try {
-      for (Object [] array : new Object [][] {
-          new Object[0],
-          new Object[] { null },
-          new Object[] { "X", "Y"},
-          new Object[] { Calendar.getInstance(), Calendar.getInstance() },
-          new Object[] { null, "X", Calendar.getInstance() } }) {
+      for (int [] array : new int [][] {
+          new int[0],
+          new int[] { 1 },
+          new int[] { 1, 2 }}) {
         DeepArrayTestBean bean = new DeepArrayTestBean(array);
         DeepArrayTestBean clone = clone(bean);
         assertNotSame(bean, clone);
         assertNotSame(bean.x, clone.x);
-        assertEquals(bean.x.length, clone.x.length);
-        for (int i=0; i<bean.x.length; i++) {
-          if (bean.x[i] instanceof Calendar) {
-            assertNotSame(bean.x[i], clone.x[i]);
-            assertEquals(bean.x[i], clone.x[i]);
-          } else {
-            assertSame(bean.x[i], clone.x[i]);
-          }
-        }
+        assertTrue(Arrays.equals(bean.x, clone.x));
       }
     } catch (CloneNotSupportedException ex) {
       fail();
     }
   }
-
 }

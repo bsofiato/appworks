@@ -90,7 +90,7 @@ public class DefaultCloningStrategyFactory implements CloningStrategyFactory {
     if (br.com.appworks.runtime.lang.support.cloning.Cloneable.class.isAssignableFrom(klass)) {
       return new CloneableCloningStrategy();
     } else if (klass.isArray()) {
-      return new ArrayCloningStrategy();
+      return new ArrayCloningStrategy(klass.getComponentType());
     } else if (getCustomTypeCloningStrategyMapping().containsKey(klass)) {
       return (CloningStrategy<Type>) (getCustomTypeCloningStrategyMapping().get(klass).clone());
     } else {

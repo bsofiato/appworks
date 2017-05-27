@@ -21,6 +21,7 @@
 package br.com.appworks.runtime.lang.support.cloning;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /**
  * <p>Cloning strategy for array cloning.</p>
@@ -37,7 +38,7 @@ import java.lang.reflect.Array;
  *                strategy
  * @author Bruno Sofiato
  */
-public class ArrayCloningStrategy <Type extends Object> implements CloningStrategy <Type []> {
+public class ArrayCloningStrategy <Type> implements CloningStrategy <Type> {
 
   /**
    * <p>Element's reflection based cloning strategy.</p>
@@ -56,6 +57,32 @@ public class ArrayCloningStrategy <Type extends Object> implements CloningStrate
   }
   
   /**
+   * <p>Associated array component type.</p>
+   */
+  
+  private final Class componentType;
+
+  /**
+   * <p>Gets the associated array compoent type.</p>
+   *
+   * @return Associated array component type
+   */
+  
+  private Class getComponentType() {
+    return componentType;
+  }
+
+   /**
+   * <p>Constructs a new array's cloning strategy.</p>
+   *
+   * @param componentType Component type of the associated array
+   */
+  
+  public ArrayCloningStrategy(Class componentType) {
+    this.componentType = componentType;
+  }
+ 
+  /**
    * <p>Clones an array.</p>
    *
    * <p>If the source array is <tt>null</tt>, the returned array is also 
@@ -67,15 +94,20 @@ public class ArrayCloningStrategy <Type extends Object> implements CloningStrate
    * @throws CloneNotSupportedException If there's any errors in the array 
    *                                    cloning process
    */
-  public Type [] clone(final Type [] source) throws CloneNotSupportedException {
-    Type [] clone = null;
+  public Type clone(final Type source) throws CloneNotSupportedException {
     if (source != null) {
-      clone = (Type []) (Array.newInstance(source.getClass().getComponentType(), source.length));
-      for (int i = 0; i < source.length; i++) {
-        clone[i] = getCloningStrategy().clone(source[i]);
+      if (getComponentType().isPrimitive()) {
+        return getCloningStrategy().clone(source);
+      } else {
+        Object [] sourceArray = (Object [])(source);
+        Object [] clone = (Object [])(Array.newInstance(getComponentType(), sourceArray.length));
+        for (int i = 0; i < sourceArray.length; i++) {
+          clone[i] = getCloningStrategy().clone((Type)(sourceArray[i]));
+        }
+        return (Type)(clone);
       }
     }
-    return clone;
+    return null;
   }
   
   /**

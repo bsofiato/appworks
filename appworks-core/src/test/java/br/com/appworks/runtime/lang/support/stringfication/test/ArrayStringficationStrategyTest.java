@@ -29,19 +29,19 @@ public class ArrayStringficationStrategyTest extends TestCase {
   public void testArrayToStringSanityCheck() {
     String [] array = new String [] { "TESTE1", "TESTE2" };
     StringBuilder sb = new StringBuilder();
-    new IdentityStringficationStrategy <String []> ().toString(array, sb);
+    new IdentityStringficationStrategy().toString(array, sb);
     assertEquals(sb.toString(), array.toString());
   }
   
   public void testNullObjectStringfication() {
-    ArrayStringficationStrategy <String> strategy = new ArrayStringficationStrategy <String> ();
+    ArrayStringficationStrategy strategy = new ArrayStringficationStrategy (new String[0].getClass());
     StringBuilder sb = new StringBuilder();
     strategy.toString(null, sb);
     assertEquals("null", sb.toString());
   }
   
   public void testFlatArrayStringfication() {
-    ArrayStringficationStrategy <String> strategy = new ArrayStringficationStrategy <String> ();
+    ArrayStringficationStrategy strategy = new ArrayStringficationStrategy (new String[0].getClass());
     StringBuilder sb = new StringBuilder();
     strategy.toString(new String [] { "TESTE1", "TESTE2" }, sb);
     assertTrue(sb.toString().contains("TESTE1"));
@@ -49,14 +49,14 @@ public class ArrayStringficationStrategyTest extends TestCase {
   }
   
   public void testMultidimensionalNullArrayStringfication() {
-    ArrayStringficationStrategy <String [] > strategy = new ArrayStringficationStrategy <String []> ();
+    ArrayStringficationStrategy strategy = new ArrayStringficationStrategy (new String[0].getClass());
     StringBuilder sb = new StringBuilder();
     strategy.toString(new String [][] { new String [] { null }}, sb);
     assertTrue(sb.toString().contains("null"));
   }
   
   public void testMultidimensionaArrayStringfication() {
-    ArrayStringficationStrategy <String []> strategy = new ArrayStringficationStrategy <String []> ();
+    ArrayStringficationStrategy strategy = new ArrayStringficationStrategy (new String[0].getClass());
     StringBuilder sb = new StringBuilder();
     strategy.toString(new String [][] { new String [] { "TESTE1", "TESTE2" }, new String [] { "TESTE3", "TESTE4" }}, sb);
     assertTrue(sb.toString().contains("TESTE1"));
@@ -67,7 +67,7 @@ public class ArrayStringficationStrategyTest extends TestCase {
   
   public void testClone() {
     try {
-      assertTrue(new ArrayStringficationStrategy().clone() instanceof ArrayStringficationStrategy);
+      assertTrue(new ArrayStringficationStrategy(new String[0].getClass()).clone() instanceof ArrayStringficationStrategy);
     } catch (Exception ex) {
       fail();
     }

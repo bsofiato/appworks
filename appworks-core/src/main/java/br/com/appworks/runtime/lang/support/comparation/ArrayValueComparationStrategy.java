@@ -21,6 +21,7 @@
 package br.com.appworks.runtime.lang.support.comparation;
 
 import br.com.appworks.runtime.lang.OrderPolicy;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -35,7 +36,7 @@ import java.util.Arrays;
  * @author Bruno Sofiato
  */
 
-public class ArrayValueComparationStrategy <Type> extends AbstractComparationStrategy <Type []> {
+public class ArrayValueComparationStrategy <Type> extends AbstractComparationStrategy <Type> {
   
   /**
    * <p>Associated array component type.</p>
@@ -73,8 +74,8 @@ public class ArrayValueComparationStrategy <Type> extends AbstractComparationStr
    *                            isn't an <tt>Comparable</tt> instance.
    */
 
-  public int compare(final Type [] op1, final Type [] op2) {
-    if (java.lang.Comparable.class.isAssignableFrom(getComponentType())) {
+  public int compare(final Type op1, final Type op2) {
+    if (getComponentType().isPrimitive() || java.lang.Comparable.class.isAssignableFrom(getComponentType())) {
       return super.compare(op1, op2);
     }
     throw new ClassCastException();
@@ -94,22 +95,26 @@ public class ArrayValueComparationStrategy <Type> extends AbstractComparationStr
    *         is less than, equal to, or greater than the second operand
    */
 
-  protected int doCompare(final Type [] op1, final Type [] op2) {
-    if (op1.length == op2.length) {
-      for (int i = 0; i < op1.length; i++) {
-        if (op1[i] == null)  {
+  protected int doCompare(final Type op1, final Type op2) {
+    int l1 = Array.getLength(op1);
+    int l2 = Array.getLength(op2);
+    if (l1 == l2) {
+      for (int i = 0; i < l1; i++) {
+        Object e1 = Array.get(op1, i);
+        Object e2 = Array.get(op2, i);
+        if (e1 == null)  {
           return -1;
-        } else if (op2[i] == null) {
+        } else if (e2 == null) {
           return 1;
         } else {
-          int compareTo = ((java.lang.Comparable) (op1[i])).compareTo(op2[i]);
+          int compareTo = ((java.lang.Comparable) (e1)).compareTo(e2);
           if (compareTo != 0) {
             return compareTo;
           }
         }
       }
     }
-    return op1.length - op2.length;
+    return l1 - l2;
   }
   /**
    * <p>Constructs a new array's comparation strategy.</p>
@@ -164,8 +169,27 @@ public class ArrayValueComparationStrategy <Type> extends AbstractComparationStr
    *         <tt>false</tt> otherwise
    */
 
-  public boolean equals(final Type [] op1, final Type [] op2) {
-    return Arrays.deepEquals(op1, op2);
+  public boolean equals(final Type op1, final Type op2) {
+    if (getComponentType().isPrimitive()) {
+      if (getComponentType() == Boolean.TYPE) {
+        return Arrays.equals((boolean [])(op1), (boolean [])(op2));
+      } else if (getComponentType() == Byte.TYPE) {
+        return Arrays.equals((byte [])(op1), (byte [])(op2));
+      } else if (getComponentType() == Character.TYPE) {
+        return Arrays.equals((char [])(op1), (char [])(op2));
+      } else if (getComponentType() == Double.TYPE) {
+        return Arrays.equals((double [])(op1), (double [])(op2));
+      } else if (getComponentType() == Float.TYPE) {
+        return Arrays.equals((float [])(op1), (float [])(op2));
+      } else if (getComponentType() == Integer.TYPE) {
+        return Arrays.equals((int [])(op1), (int [])(op2));
+      } else if (getComponentType() == Long.TYPE) {
+        return Arrays.equals((long [])(op1), (long [])(op2));
+      } else if (getComponentType() == Short.TYPE) {
+        return Arrays.equals((short [])(op1), (short [])(op2));
+      }
+    } 
+    return Arrays.deepEquals((Object [])(op1), (Object [])(op2));
   }
 
   /**
@@ -182,7 +206,26 @@ public class ArrayValueComparationStrategy <Type> extends AbstractComparationStr
    * @return The supplied array hash code
    */
 
-  public int hashCode(final Type [] object) {
-    return Arrays.deepHashCode(object);
+  public int hashCode(final Type object) {
+    if (getComponentType().isPrimitive()) {
+       if (getComponentType() == Boolean.TYPE) {
+        return Arrays.hashCode((boolean [])(object));
+      } else if (getComponentType() == Byte.TYPE) {
+        return Arrays.hashCode((byte [])(object));
+      } else if (getComponentType() == Character.TYPE) {
+        return Arrays.hashCode((char [])(object));
+      } else if (getComponentType() == Double.TYPE) {
+        return Arrays.hashCode((double [])(object));
+      } else if (getComponentType() == Float.TYPE) {
+        return Arrays.hashCode((float [])(object));
+      } else if (getComponentType() == Integer.TYPE) {
+        return Arrays.hashCode((int[])(object));
+      } else if (getComponentType() == Long.TYPE) {
+        return Arrays.hashCode((long[])(object));
+      } else if (getComponentType() == Short.TYPE) {
+        return Arrays.hashCode((short[])(object));
+      }
+    } 
+    return Arrays.deepHashCode((Object [])(object));
   }
 }

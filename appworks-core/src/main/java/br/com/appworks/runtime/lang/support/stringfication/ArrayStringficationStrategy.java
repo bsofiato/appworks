@@ -32,8 +32,33 @@ import java.util.Arrays;
  *                stringfication strategy
  * @author Bruno Sofiato
  */
-public class ArrayStringficationStrategy <Type> extends AbstractStringficationStrategy <Type []>{
+public class ArrayStringficationStrategy <Type> extends AbstractStringficationStrategy <Type>{
+  
+  /**
+   * <p>Associated array component type.</p>
+   */
+  
+  private final Class <? extends Type> componentType;
 
+  /**
+   * <p>Gets the associated array compoent type.</p>
+   *
+   * @return Associated array component type
+   */
+  
+  private Class <? extends Type> getComponentType() {
+    return componentType;
+  }
+
+  /**
+   * <p>Constructs a new array's stringfication strategy.</p>
+   *
+   * @param componentType Component type of the associated array
+   */
+  public ArrayStringficationStrategy(Class<? extends Type> componentType) {
+    this.componentType = componentType;
+  }
+  
   /**
    * <p>Gets the supplied array string representation.</p>
    *
@@ -48,9 +73,27 @@ public class ArrayStringficationStrategy <Type> extends AbstractStringficationSt
    *           supplied instance.
    */
 
-  protected void safeToString(final Type [] object, final StringBuilder sb) {
-    if (object != null) {
-      sb.append(Arrays.deepToString(object));
+  protected void safeToString(final Type object, final StringBuilder sb) {
+    if (getComponentType().isPrimitive()) {
+       if (getComponentType() == Boolean.TYPE) {
+        sb.append(Arrays.toString((boolean [])(object)));
+      } else if (getComponentType() == Byte.TYPE) {
+        sb.append(Arrays.toString((byte [])(object)));
+      } else if (getComponentType() == Character.TYPE) {
+        sb.append(Arrays.toString((char [])(object)));
+      } else if (getComponentType() == Double.TYPE) {
+        sb.append(Arrays.toString((double [])(object)));
+      } else if (getComponentType() == Float.TYPE) {
+        sb.append(Arrays.toString((float [])(object)));
+      } else if (getComponentType() == Integer.TYPE) {
+        sb.append(Arrays.toString((int[])(object)));
+      } else if (getComponentType() == Long.TYPE) {
+        sb.append(Arrays.toString((long[])(object)));
+      } else if (getComponentType() == Short.TYPE) {
+        sb.append(Arrays.toString((short[])(object)));
+      }
+    } else {
+      sb.append(Arrays.deepToString((Object [])(object)));
     }
   }
 }
